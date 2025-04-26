@@ -2,6 +2,8 @@
 horilla/horilla_backends_gcp.py
 """
 
+import os  # <--- Add this line
+
 from django.db import models
 from storages.backends.gcloud import GoogleCloudStorage
 
@@ -13,7 +15,7 @@ class PrivateMediaStorage(GoogleCloudStorage):
     PrivateMediaStorage
     """
 
-    location = settings.env("NAMESPACE", default="private")
+    location = os.getenv("NAMESPACE", "private")  # <-- Replace settings.env with os.getenv
     default_acl = "private"
     file_overwrite = False
 

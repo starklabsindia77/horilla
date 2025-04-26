@@ -1,19 +1,15 @@
 from django.core.files.storage import FileSystemStorage
-
 from horilla import settings
 from horilla.horilla_apps import INSTALLED_APPS
+import os  # <-- Add this
 
-"""
-DB_INIT_PASSWORD: str
-
-The password used for database setup and initialization. This password is a
-48-character alphanumeric string generated using a UUID to ensure high entropy and security.
-"""
-DB_INIT_PASSWORD = settings.env(
-    "DB_INIT_PASSWORD", default="d3f6a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d"
+# DB_INIT_PASSWORD
+DB_INIT_PASSWORD = os.getenv(
+    "DB_INIT_PASSWORD",
+    default="d3f6a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d"
 )
 
-
+# Horilla formats
 HORILLA_DATE_FORMATS = {
     "DD/MM/YY": "%d/%m/%y",
     "DD-MM-YYYY": "%d-%m-%Y",
@@ -31,10 +27,9 @@ HORILLA_DATE_FORMATS = {
 
 HORILLA_TIME_FORMATS = {
     "hh:mm A": "%I:%M %p",  # 12-hour format
-    "HH:mm": "%H:%M",  # 24-hour format
-    "HH:mm:ss.SSSSSS": "%H:%M:%S.%f",  # 24-hour format with seconds and microseconds
+    "HH:mm": "%H:%M",       # 24-hour format
+    "HH:mm:ss.SSSSSS": "%H:%M:%S.%f",  # 24-hour format with microseconds
 }
-
 
 BIO_DEVICE_THREADS = {}
 
@@ -55,67 +50,31 @@ APPS = [
 ]
 
 NO_PERMISSION_MODALS = [
-    "historicalbonuspoint",
-    "assetreport",
-    "assetdocuments",
-    "returnimages",
-    "holiday",
-    "companyleave",
-    "historicalavailableleave",
-    "historicalleaverequest",
-    "historicalleaveallocationrequest",
-    "leaverequestconditionapproval",
-    "historicalcompensatoryleaverequest",
-    "employeepastleaverestrict",
-    "overrideleaverequests",
-    "historicalrotatingworktypeassign",
-    "employeeshiftday",
-    "historicalrotatingshiftassign",
-    "historicalworktyperequest",
-    "historicalshiftrequest",
-    "multipleapprovalmanagers",
-    "attachment",
-    "announcementview",
-    "emaillog",
-    "driverviewed",
-    "dashboardemployeecharts",
-    "attendanceallowedip",
-    "tracklatecomeearlyout",
-    "historicalcontract",
-    "overrideattendance",
-    "overrideleaverequest",
-    "overrideworkinfo",
-    "multiplecondition",
-    "historicalpayslip",
-    "reimbursementmultipleattachment",
-    "historicalcontract",
-    "overrideattendance",
-    "overrideleaverequest",
-    "workrecord",
-    "historicalticket",
-    "skill",
-    "historicalcandidate",
-    "rejectreason",
-    "historicalrejectedcandidate",
-    "rejectedcandidate",
-    "stagefiles",
-    "stagenote",
-    "questionordering",
-    "recruitmentsurveyordering",
-    "recruitmentsurveyanswer",
-    "recruitmentgeneralsetting",
-    "resume",
-    "recruitmentmailtemplate",
+    "historicalbonuspoint", "assetreport", "assetdocuments", "returnimages", "holiday",
+    "companyleave", "historicalavailableleave", "historicalleaverequest",
+    "historicalleaveallocationrequest", "leaverequestconditionapproval",
+    "historicalcompensatoryleaverequest", "employeepastleaverestrict",
+    "overrideleaverequests", "historicalrotatingworktypeassign", "employeeshiftday",
+    "historicalrotatingshiftassign", "historicalworktyperequest", "historicalshiftrequest",
+    "multipleapprovalmanagers", "attachment", "announcementview", "emaillog", "driverviewed",
+    "dashboardemployeecharts", "attendanceallowedip", "tracklatecomeearlyout",
+    "historicalcontract", "overrideattendance", "overrideleaverequest", "overrideworkinfo",
+    "multiplecondition", "historicalpayslip", "reimbursementmultipleattachment",
+    "historicalcontract", "overrideattendance", "overrideleaverequest", "workrecord",
+    "historicalticket", "skill", "historicalcandidate", "rejectreason", "historicalrejectedcandidate",
+    "rejectedcandidate", "stagefiles", "stagenote", "questionordering", "recruitmentsurveyordering",
+    "recruitmentsurveyanswer", "recruitmentgeneralsetting", "resume", "recruitmentmailtemplate",
 ]
 
-if settings.env("AWS_ACCESS_KEY_ID", default=None):
-    AWS_ACCESS_KEY_ID = settings.env("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = settings.env("AWS_SECRET_ACCESS_KEY")
-    AWS_STORAGE_BUCKET_NAME = settings.env("AWS_STORAGE_BUCKET_NAME")
-    AWS_S3_REGION_NAME = settings.env("AWS_S3_REGION_NAME")
-    DEFAULT_FILE_STORAGE = settings.env("DEFAULT_FILE_STORAGE")
-    AWS_S3_ADDRESSING_STYLE = settings.env("AWS_S3_ADDRESSING_STYLE")
-    AWS_S3_ENDPOINT_URL = settings.env("AWS_S3_ENDPOINT_URL", default=None)
+# AWS S3 Storage settings (optional)
+if os.getenv("AWS_ACCESS_KEY_ID"):
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
+    DEFAULT_FILE_STORAGE = os.getenv("DEFAULT_FILE_STORAGE")
+    AWS_S3_ADDRESSING_STYLE = os.getenv("AWS_S3_ADDRESSING_STYLE")
+    AWS_S3_ENDPOINT_URL = os.getenv("AWS_S3_ENDPOINT_URL", default=None)
 
     settings.AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
     settings.AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
@@ -125,18 +84,16 @@ if settings.env("AWS_ACCESS_KEY_ID", default=None):
     settings.AWS_S3_ADDRESSING_STYLE = AWS_S3_ADDRESSING_STYLE
     settings.AWS_S3_ENDPOINT_URL = AWS_S3_ENDPOINT_URL
 
+if os.getenv("AWS_ACCESS_KEY_ID") and "storages" in INSTALLED_APPS:
+    settings.MEDIA_URL = f"{os.getenv('MEDIA_URL')}/{os.getenv('NAMESPACE')}/"
+    settings.MEDIA_ROOT = f"{os.getenv('MEDIA_ROOT')}/{os.getenv('NAMESPACE')}/"
 
-if settings.env("AWS_ACCESS_KEY_ID", default=None) and "storages" in INSTALLED_APPS:
-    settings.MEDIA_URL = f"{settings.env('MEDIA_URL')}/{settings.env('NAMESPACE')}/"
-    settings.MEDIA_ROOT = f"{settings.env('MEDIA_ROOT')}/{settings.env('NAMESPACE')}/"
-
-
-# Default LDAP settings
+# LDAP Defaults
 DEFAULT_LDAP_CONFIG = {
-    "LDAP_SERVER": settings.env("LDAP_SERVER", default="ldap://127.0.0.1:389"),
-    "BIND_DN": settings.env("BIND_DN", default="cn=admin,dc=horilla,dc=com"),
-    "BIND_PASSWORD": settings.env("BIND_PASSWORD", default="horilla"),
-    "BASE_DN": settings.env("BASE_DN", default="ou=users,dc=horilla,dc=com"),
+    "LDAP_SERVER": os.getenv("LDAP_SERVER", default="ldap://127.0.0.1:389"),
+    "BIND_DN": os.getenv("BIND_DN", default="cn=admin,dc=horilla,dc=com"),
+    "BIND_PASSWORD": os.getenv("BIND_PASSWORD", default="horilla"),
+    "BASE_DN": os.getenv("BASE_DN", default="ou=users,dc=horilla,dc=com"),
 }
 
 
@@ -146,10 +103,8 @@ def load_ldap_settings():
     """
     try:
         from django.db import connection
-
         from horilla_ldap.models import LDAPSettings
 
-        # Ensure DB is ready before querying
         if not connection.introspection.table_names():
             print("⚠️ Database is empty. Using default LDAP settings.")
             return DEFAULT_LDAP_CONFIG
@@ -166,4 +121,4 @@ def load_ldap_settings():
         print(f"⚠️ Warning: Could not load LDAP settings ({e})")
         return DEFAULT_LDAP_CONFIG  # Return default on error
 
-    return DEFAULT_LDAP_CONFIG  # Fallback in case of an issue
+    return DEFAULT_LDAP_CONFIG  # Fallback
