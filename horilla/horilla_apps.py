@@ -3,7 +3,7 @@ horilla_apps
 
 This module is used to register horilla addons
 """
-
+import os
 from horilla import settings
 from horilla.settings import INSTALLED_APPS
 
@@ -21,7 +21,7 @@ INSTALLED_APPS.append("helpdesk")
 INSTALLED_APPS.append("offboarding")
 INSTALLED_APPS.append("horilla_backup")
 INSTALLED_APPS.append("project")
-if settings.env("AWS_ACCESS_KEY_ID", default=None) and "storages" not in INSTALLED_APPS:
+if os.getenv("AWS_ACCESS_KEY_ID") and "storages" not in settings.INSTALLED_APPS:
     INSTALLED_APPS.append("storages")
 
 
